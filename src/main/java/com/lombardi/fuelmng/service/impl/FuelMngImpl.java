@@ -5,38 +5,37 @@ import com.lombardi.fuelmng.model.internal.IFuelConsumption;
 import com.lombardi.fuelmng.model.internal.InnerFuelConsumption;
 import com.lombardi.fuelmng.repo.FuelMngRepo;
 import com.lombardi.fuelmng.service.intrface.IFuelMng;
+import com.lombardi.fuelmng.util.SingletonHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FuelMngImpl implements IFuelMng {
 
     @Autowired
-    FuelMngRepo repo;
+    FuelMngRepo fuelMngRepo;
 
     @Override
     public FuelConsumption insertConsumption(FuelConsumption fuelConsumption) {
-        return repo.save(fuelConsumption);
+        return fuelMngRepo.save(fuelConsumption);
     }
 
     @Override
     public List<FuelConsumption> bulkInsertConsumption(FuelConsumption[] fuelConsumptionList) {
         List<FuelConsumption> consumptionList = new ArrayList<>();
         for (FuelConsumption fuelConsumption : fuelConsumptionList) {
-            consumptionList.add(repo.save(fuelConsumption));
+            consumptionList.add(fuelMngRepo.save(fuelConsumption));
         }
         return consumptionList;
     }
 
-    public Map<String, String> retrieveMonthlyExpenses() {
+    @Override
+    public Map<String, String> retrieveMonthlyExpenses(Optional<String> driverId) {
         Map<String, String> monthlyExpensesMap = new HashMap<>();
 
-        List<Object[]> consumptionList = repo.retrieveMonthlyExpenses();
+        List<Object[]> consumptionList = fuelMngRepo.monthlySpending(driverId);
         for (Object[] elementList : consumptionList) {
             monthlyExpensesMap.put(String.valueOf(elementList[0]), String.valueOf(elementList[1]));
         }
@@ -45,8 +44,8 @@ public class FuelMngImpl implements IFuelMng {
     }
 
     @Override
-    public List<InnerFuelConsumption> retrieveExpensesOfMonth(String month) {
-        List<IFuelConsumption> iFuelConsumptionList = repo.retrieveByMonth(month);
+    public List<InnerFuelConsumption> retireveExpensesOfMonth(String month,Optional<String> driverId) {
+        List<IFuelConsumption> iFuelConsumptionList = fuelMngRepo.retrieveByMonth(month,driverId);
 
         List<InnerFuelConsumption> innerFuelConsumptionList = new ArrayList<>();
         for (IFuelConsumption iFuelConsumption : iFuelConsumptionList) {
@@ -58,9 +57,10 @@ public class FuelMngImpl implements IFuelMng {
 
     }
 
+
     @Override
-    public List<InnerFuelConsumption> monthlyStatistic() {
-        List<IFuelConsumption> iFuelConsumptionList = repo.monthlyStatistic();
+    public List<InnerFuelConsumption> monthlyStatistic(Optional<String> driverId) {
+        List<IFuelConsumption> iFuelConsumptionList = fuelMngRepo.monthlyStatistic(driverId);
         List<InnerFuelConsumption> innerFuelConsumptionList = new ArrayList<>();
         for (IFuelConsumption iFuelConsumption : iFuelConsumptionList) {
             InnerFuelConsumption innerFuelConsumption = new InnerFuelConsumption.InnerFuelConsumptionBuilder(iFuelConsumption.getFUEL_TYPE(), iFuelConsumption.getVOLUME(), iFuelConsumption.getTOTAL_PRICE()).setAveragePrice(iFuelConsumption.getAVERAGE()).build();
@@ -68,5 +68,7 @@ public class FuelMngImpl implements IFuelMng {
         }
         return innerFuelConsumptionList;
     }
+
+
 
 }

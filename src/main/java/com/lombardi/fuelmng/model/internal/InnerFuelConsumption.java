@@ -1,7 +1,10 @@
 package com.lombardi.fuelmng.model.internal;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.lombardi.fuelmng.util.SingletonHolder;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class InnerFuelConsumption {
@@ -11,6 +14,7 @@ public class InnerFuelConsumption {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String driverId;
     @JsonInclude(JsonInclude.Include.NON_NULL)
+
     private Date consumptionDate;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Double price;

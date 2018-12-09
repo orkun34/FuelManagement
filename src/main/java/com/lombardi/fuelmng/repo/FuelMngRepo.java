@@ -8,18 +8,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FuelMngRepo extends JpaRepository<FuelConsumption,Long> {
 
-    @Query(value="SELECT MONTH(consumption_date) as \"MONTH\", SUM(price*volume) as \"TOTAL\" FROM fuel_consumption Group By MONTH(consumption_date)",nativeQuery = true)
-    List<Object[]> retrieveMonthlyExpenses();
+    @Query(value="SELECT MONTH(consumption_date) as \"MONTH\", SUM(price*volume) as \"TOTAL_PRICE\" FROM fuel_consumption where (:driverId is NULL or DRIVER_ID=:driverId) Group By MONTH(consumption_date)",nativeQuery = true)
+    List<Object[]> monthlySpending(@Param("driverId") Optional<String> driverId);
 
-    @Query(value="SELECT FUEL_TYPE,VOLUME,CONSUMPTION_DATE,PRICE,(PRICE*VOLUME) AS \"TOTAL_PRICE\",DRIVER_ID from fuel_consumption where MONTH(consumption_date)=:month",nativeQuery = true)
-    List<Object[]> retrieveExpensesOfMonth(@Param("month") String month);
+    List<IFuelConsumption> retrieveByMonth(@Param("month") String month,@Param("driverId") Optional<String> driverId);
 
-    List<IFuelConsumption> retrieveByMonth(@Param("month") String month);
-
-    List<IFuelConsumption> monthlyStatistic();
+    List<IFuelConsumption> monthlyStatistic(@Param("driverId") Optional<String> driverId);
 
 }

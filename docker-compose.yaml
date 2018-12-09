@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+
+  fuelmng-app:
+      image: fuelmng-springboot
+      container_name: fuelmng-cont-springboot
+      build:
+        context: ./
+        dockerfile: Dockerfile
+      ports:
+       - "8282:8080"

@@ -5,6 +5,7 @@ import com.lombardi.fuelmng.model.internal.InnerFuelConsumption;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface IFuelMng {
 
@@ -12,11 +13,12 @@ public interface IFuelMng {
 
     List<FuelConsumption> bulkInsertConsumption(FuelConsumption[] fuelConsumptionList);
 
-    Map<String,String> retrieveMonthlyExpenses();
+    Map<String,String> retrieveMonthlyExpenses(Optional<String> driverId);
 
-    List<InnerFuelConsumption> retrieveExpensesOfMonth(String month);
+    List<InnerFuelConsumption> retireveExpensesOfMonth(String month,Optional<String> driverId);
 
-    List<InnerFuelConsumption> monthlyStatistic();
+
+    List<InnerFuelConsumption> monthlyStatistic(Optional<String> driverId);
 
 }
 

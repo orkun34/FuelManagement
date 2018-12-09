@@ -1,0 +1,14 @@
+[{
+"fuelType":"95",
+"price":23.32,
+"volume":67.4,
+"consumptionDate":"2018-05-02",
+"driverId":"2342"
+},
+{
+"fuelType":"98",
+"price":99.32,
+"volume":56.4,
+"consumptionDate":"2018-01-02",
+"driverId":"BABABA"
+}]
