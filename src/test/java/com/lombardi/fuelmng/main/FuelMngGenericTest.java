@@ -74,7 +74,7 @@ public class FuelMngGenericTest {
                 createURLWithPort("/register"),
                 HttpMethod.POST, entity, String.class);
 
-        String expected = "{\"fuelConsumptionId\":7,\"fuelType\":\"Diesel\",\"driverId\":\"234KK\",\"consumptionDate\":\"Feb 21, 2018 12:00:00 AM\",\"price\":10.3,\"volume\":77.2}";
+        String expected = "{\"fuelConsumptionId\":8,\"fuelType\":\"Diesel\",\"driverId\":\"234KK\",\"consumptionDate\":\"Feb 21, 2018 12:00:00 AM\",\"price\":10.3,\"volume\":77.2}";
 
         JSONAssert.assertEquals(expected, response.getBody(), false);
     }

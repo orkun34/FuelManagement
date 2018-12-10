@@ -1,6 +1,10 @@
 package com.lombardi.fuelmng.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -41,9 +45,11 @@ public class FuelConsumption extends BaseFuelConsumption{
     private String fuelType;
     @NotNull
     @Column(name = "PRICE")
+    @DecimalMax("200.0") @DecimalMin("0.0")
     private Double price;
     @NotNull
     @Column(name = "VOLUME")
+    @DecimalMax("1000.0") @DecimalMin("0.0")
     private Double volume;
     @NotNull
     @Temporal(TemporalType.DATE)
@@ -51,6 +57,7 @@ public class FuelConsumption extends BaseFuelConsumption{
     private Date consumptionDate;
     @NotNull
     @Column(name = "DRIVER_ID")
+    @Length(max=50)
     private String driverId;
 
     public FuelConsumption() {

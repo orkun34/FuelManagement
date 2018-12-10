@@ -1,15 +1,16 @@
 package com.lombardi.fuelmng.common.exception;
 
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-@RestController
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class FuelMngExceptionController extends ResponseEntityExceptionHandler {
 
 
@@ -28,9 +29,9 @@ public class FuelMngExceptionController extends ResponseEntityExceptionHandler {
 
         ExceptionHandlerResponse error = new ExceptionHandlerResponse();
         error.setErrorMessage(exception.getMessage());
-        error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+        error.setErrorCode(HttpStatus.NOT_ACCEPTABLE.toString());
 
-        return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(error, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler
@@ -52,15 +53,5 @@ public class FuelMngExceptionController extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity(error, HttpStatus.UNPROCESSABLE_ENTITY);
     }
-
-    @ExceptionHandler(BeanValidationException.class)
-    public final ResponseEntity<Object> handleBeanValidation(BeanValidationException ex) {
-        ExceptionHandlerResponse error = new ExceptionHandlerResponse();
-        error.setErrorMessage(ex.getMessage());
-        error.setErrorCode(HttpStatus.NOT_ACCEPTABLE.toString());
-
-        return new ResponseEntity(error, HttpStatus.NOT_ACCEPTABLE);
-    }
-
 
 }
