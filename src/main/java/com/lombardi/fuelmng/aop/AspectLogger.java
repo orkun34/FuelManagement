@@ -14,6 +14,10 @@ import java.util.Arrays;
 @Aspect
 @Component
 @EnableAspectJAutoProxy
+
+/**
+ * In order to handle AOP logs
+ */
 public class AspectLogger {
 
     private static final Logger logger = LoggerFactory.getLogger(AspectLogger.class);

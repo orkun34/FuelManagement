@@ -11,6 +11,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
+
+/**
+ * Custom exception handling controller
+ */
 public class FuelMngExceptionController extends ResponseEntityExceptionHandler {
 
 
@@ -48,7 +52,7 @@ public class FuelMngExceptionController extends ResponseEntityExceptionHandler {
     public final ResponseEntity<ExceptionHandlerResponse> handleJsonParsing(JsonParsingException exception) {
 
         ExceptionHandlerResponse error = new ExceptionHandlerResponse();
-        error.setErrorMessage("Not parsable object");
+        error.setErrorMessage(exception.getMessage());
         error.setErrorCode(HttpStatus.UNPROCESSABLE_ENTITY.toString());
 
         return new ResponseEntity(error, HttpStatus.UNPROCESSABLE_ENTITY);

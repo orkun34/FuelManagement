@@ -1,9 +1,11 @@
 package com.lombardi.fuelmng.rest;
 
 
+import com.google.gson.JsonParseException;
 import com.lombardi.fuelmng.aop.AspectLogger;
 import com.lombardi.fuelmng.common.exception.FileParsingException;
 import com.lombardi.fuelmng.common.exception.InternalException;
+import com.lombardi.fuelmng.common.exception.JsonParsingException;
 import com.lombardi.fuelmng.model.FuelConsumption;
 import com.lombardi.fuelmng.service.intrface.IFuelMng;
 import com.lombardi.fuelmng.util.SingletonHolder;
@@ -24,6 +26,10 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+/**
+ * Endpoint for registration of consumption
+ */
 
 @RestController
 public class FuelMngRegisterRest {
@@ -53,20 +59,24 @@ public class FuelMngRegisterRest {
     }
 
     @PostMapping(path = "/bulkRegister", produces = "application/json")
-    public ResponseEntity<?> bulkInsertConsumption(@Valid @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> bulkInsertConsumption(@Valid @RequestParam("file") MultipartFile file) throws JsonParsingException,FileParsingException,InternalException{
 
         List<FuelConsumption> fuelConsumptionList;
         String convertedFile;
-
+        FuelConsumption[] consumptionList;
         try {
             ByteArrayInputStream stream = new ByteArrayInputStream(file.getBytes());
             convertedFile = IOUtils.toString(stream, StandardCharsets.UTF_8);
-        } catch (IOException e) {
+            consumptionList = SingletonHolder.getInstance().getGson().fromJson(convertedFile, FuelConsumption[].class);
+            fuelConsumptionList = fuelMng.bulkInsertConsumption(consumptionList);
+        }catch (IOException e) {
             throw new FileParsingException("File parsing error");
+        }catch(JsonParseException jex){
+            throw new JsonParsingException("Invalid JSON format");
+        }catch(Exception ex){
+            throw new InternalException(ex.getLocalizedMessage());
         }
-        FuelConsumption[] consumptionList = SingletonHolder.getInstance().getGson().fromJson(convertedFile, FuelConsumption[].class);
 
-        fuelConsumptionList = fuelMng.bulkInsertConsumption(consumptionList);
 
         return new ResponseEntity<>(SingletonHolder.getInstance().getGson().toJson(fuelConsumptionList),HttpStatus.CREATED);
 
