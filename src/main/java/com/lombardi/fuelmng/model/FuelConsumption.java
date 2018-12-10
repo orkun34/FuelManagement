@@ -21,7 +21,8 @@ import java.util.Date;
                         @ColumnResult(name = "FUEL_TYPE", type = String.class),
                         @ColumnResult(name = "VOLUME", type = Double.class),
                         @ColumnResult(name = "TOTAL_PRICE", type = Double.class),
-                        @ColumnResult(name = "AVERAGE_PRICE", type = Double.class)
+                        @ColumnResult(name = "AVERAGE_PRICE", type = Double.class),
+                        @ColumnResult(name = "MONTH",type = String.class)
                 })
 })
 @NamedNativeQueries({
@@ -29,7 +30,7 @@ import java.util.Date;
                 query = "select FUEL_TYPE,VOLUME,CONSUMPTION_DATE,PRICE,(PRICE*VOLUME) AS \"TOTAL_PRICE\",DRIVER_ID from FUEL_CONSUMPTION where MONTH(CONSUMPTION_DATE) = :month and (:driverId is NULL or DRIVER_ID=:driverId)",
                 resultSetMapping = "mapMonthExpense"),
         @NamedNativeQuery(name = "FuelConsumption.monthlyStatistic",
-                query = "SELECT FUEL_TYPE,VOLUME,SUM(PRICE*VOLUME) AS \"TOTAL_PRICE\",SUM(PRICE*VOLUME)/COUNT(*) AS \"AVERAGE_PRICE\" FROM FUEL_CONSUMPTION WHERE (:driverId is NULL or DRIVER_ID=:driverId) GROUP BY FUEL_TYPE,MONTH(CONSUMPTION_DATE);",
+                query = "SELECT FUEL_TYPE,AVG(PRICE*VOLUME) AS AVERAGE_PRICE,MONTH(CONSUMPTION_DATE) as \"MONTH\",SUM(PRICE*VOLUME) AS \"TOTAL_PRICE\",SUM(VOLUME) AS \"VOLUME\" FROM FUEL_CONSUMPTION WHERE (:driverId is NULL or DRIVER_ID=:driverId) GROUP BY MONTH(CONSUMPTION_DATE),FUEL_TYPE ORDER BY VOLUME;",
                 resultSetMapping = "mapMonthlyStatistic"
         )})
 
@@ -45,6 +46,7 @@ public class FuelConsumption extends BaseFuelConsumption{
     @Column(name = "VOLUME")
     private Double volume;
     @NotNull
+    @Temporal(TemporalType.DATE)
     @Column(name = "CONSUMPTION_DATE")
     private Date consumptionDate;
     @NotNull

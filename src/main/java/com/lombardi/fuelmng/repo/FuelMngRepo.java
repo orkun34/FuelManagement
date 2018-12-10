@@ -12,8 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface FuelMngRepo extends JpaRepository<FuelConsumption,Long> {
-
-    @Query(value="SELECT MONTH(consumption_date) as \"MONTH\", SUM(price*volume) as \"TOTAL_PRICE\" FROM fuel_consumption where (:driverId is NULL or DRIVER_ID=:driverId) Group By MONTH(consumption_date)",nativeQuery = true)
+    ;
+    @Query(value="SELECT MONTH(CONSUMPTION_DATE),SUM(PRICE*VOLUME) FROM FUEL_CONSUMPTION where (:driverId is NULL or DRIVER_ID=:driverId) GROUP BY MONTH(CONSUMPTION_DATE)",nativeQuery = true)
     List<Object[]> monthlySpending(@Param("driverId") Optional<String> driverId);
 
     List<IFuelConsumption> retrieveByMonth(@Param("month") String month,@Param("driverId") Optional<String> driverId);

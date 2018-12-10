@@ -1,10 +1,7 @@
 package com.lombardi.fuelmng.model.internal;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.lombardi.fuelmng.util.SingletonHolder;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class InnerFuelConsumption {
@@ -14,7 +11,6 @@ public class InnerFuelConsumption {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String driverId;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-
     private Date consumptionDate;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Double price;
@@ -24,6 +20,8 @@ public class InnerFuelConsumption {
     private Double totalPrice;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Double averagePrice;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String consumptionMonth;
 
     private InnerFuelConsumption(InnerFuelConsumptionBuilder builder) {
         this.fuelType = builder.fuelType;
@@ -33,6 +31,7 @@ public class InnerFuelConsumption {
         this.volume = builder.volume;
         this.price = builder.price;
         this.consumptionDate = builder.consumptionDate;
+        this.consumptionMonth =builder.consumptionMonth;
     }
 
     public String getFuelType() {
@@ -63,6 +62,8 @@ public class InnerFuelConsumption {
         return averagePrice;
     }
 
+    public String getConsumptionMonth(){ return consumptionMonth;}
+
     public static class InnerFuelConsumptionBuilder {
 
         private String fuelType;
@@ -72,6 +73,7 @@ public class InnerFuelConsumption {
         private Double volume;
         private Double totalPrice;
         private Double averagePrice;
+        private String consumptionMonth;
 
         public InnerFuelConsumptionBuilder(String fuelType, Double volume, Double totalPrice) {
             this.fuelType = fuelType;
@@ -84,7 +86,7 @@ public class InnerFuelConsumption {
             return this;
         }
 
-        public InnerFuelConsumptionBuilder setConsumptionDate(Date consumptionDate) {
+        public InnerFuelConsumptionBuilder setConsumptionDate(Date consumptionDate){
             this.consumptionDate = consumptionDate;
             return this;
         }
@@ -96,6 +98,11 @@ public class InnerFuelConsumption {
 
         public InnerFuelConsumptionBuilder setAveragePrice(Double averagePrice) {
             this.averagePrice = averagePrice;
+            return this;
+        }
+
+        public InnerFuelConsumptionBuilder setConsumptionMonth(String consumptionMonth) {
+            this.consumptionMonth = consumptionMonth;
             return this;
         }
 

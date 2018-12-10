@@ -16,9 +16,11 @@ public interface IFuelConsumption {
 
     Date getCONSUMPTION_DATE();
 
+    String getMONTH();
+
     String getDRIVER_ID();
 
     String getFUEL_TYPE();
 
-    Double getAVERAGE();
+    Double getAVERAGE_PRICE();
 }

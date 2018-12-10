@@ -1,6 +1,6 @@
 # FuelManagement
 
-Project Nebula is a kind of product review check application that handles inappropriate words which comes from client review.
+Project FuelManagement is a kind of fuel consumption check application for vendors
 
 Modules that are used in projects are;
  - spring-boot
@@ -8,11 +8,12 @@ Modules that are used in projects are;
  - spring-data-jpa
  - h2
 
-##### Brief
+##### Focused on
+
   - NamedNativeQueries
   - Using Optional<String> rest controller in order to remove duplicate service and repository definitions
   - N-tier layer
-  - Customer exception handling
+  - Proxy usage for JPA
 
 #### Run the project
 Go to project folder and run

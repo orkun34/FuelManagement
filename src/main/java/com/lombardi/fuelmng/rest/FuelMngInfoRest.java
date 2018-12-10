@@ -12,9 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,14 +29,12 @@ public class FuelMngInfoRest {
     IFuelMng fuelMng;
 
     @GetMapping(path = {"/monthlyStatistic", "/monthlyStatistic/{id}"}, produces = "application/json")
-    @ResponseBody
     public ResponseEntity<?> retireveMonthlyStatistic(@PathVariable Optional<String> id) {
         List<InnerFuelConsumption> innerFuelConsumptionList = fuelMng.monthlyStatistic(id);
         return new ResponseEntity<>(SingletonHolder.getInstance().getGson().toJson(innerFuelConsumptionList), HttpStatus.OK);
     }
 
     @GetMapping(path = {"/monthlyConsumption/{month}","/monthlyConsumption/{month}/{id}"}, produces = "application/json")
-    @ResponseBody
     public ResponseEntity<?> retrieveExpensesOfMonth(@PathVariable("month") String month, @PathVariable("id") Optional<String> driverId) throws InvalidMonthException {
         Integer monthValue;
         try {
@@ -53,7 +52,6 @@ public class FuelMngInfoRest {
     }
 
     @GetMapping(path = {"monthlyExpenses","monthlyExpenses/{id}"}, produces = "application/json")
-    @ResponseBody
     public ResponseEntity<?> retrieveMonthlyExpenses(@PathVariable("id") Optional<String> driverId) throws JsonParsingException {
         Map<String, String> consumptionList = fuelMng.retrieveMonthlyExpenses(driverId);
         return new ResponseEntity<>(ResponseGenerator.generateMonthlyExpensesResponse(consumptionList), HttpStatus.OK);

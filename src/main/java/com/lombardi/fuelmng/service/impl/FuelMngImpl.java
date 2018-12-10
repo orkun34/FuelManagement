@@ -5,7 +5,6 @@ import com.lombardi.fuelmng.model.internal.IFuelConsumption;
 import com.lombardi.fuelmng.model.internal.InnerFuelConsumption;
 import com.lombardi.fuelmng.repo.FuelMngRepo;
 import com.lombardi.fuelmng.service.intrface.IFuelMng;
-import com.lombardi.fuelmng.util.SingletonHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +62,7 @@ public class FuelMngImpl implements IFuelMng {
         List<IFuelConsumption> iFuelConsumptionList = fuelMngRepo.monthlyStatistic(driverId);
         List<InnerFuelConsumption> innerFuelConsumptionList = new ArrayList<>();
         for (IFuelConsumption iFuelConsumption : iFuelConsumptionList) {
-            InnerFuelConsumption innerFuelConsumption = new InnerFuelConsumption.InnerFuelConsumptionBuilder(iFuelConsumption.getFUEL_TYPE(), iFuelConsumption.getVOLUME(), iFuelConsumption.getTOTAL_PRICE()).setAveragePrice(iFuelConsumption.getAVERAGE()).build();
+            InnerFuelConsumption innerFuelConsumption = new InnerFuelConsumption.InnerFuelConsumptionBuilder(iFuelConsumption.getFUEL_TYPE(), iFuelConsumption.getVOLUME(), iFuelConsumption.getTOTAL_PRICE()).setAveragePrice(iFuelConsumption.getAVERAGE_PRICE()).setConsumptionMonth(iFuelConsumption.getMONTH()).build();
             innerFuelConsumptionList.add(innerFuelConsumption);
         }
         return innerFuelConsumptionList;
