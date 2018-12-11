@@ -13,7 +13,7 @@ Modules that are used in projects are;
   - NamedNativeQueries
   - Using Optional<String> rest controller in order to remove duplicate service and repository definitions
   - N-tier layer
-  - Proxy usage for JPA
+  - Retrieving object by interfaces
 
 #### Run the project
 Go to project folder and run
